@@ -6,9 +6,15 @@ class DataManager:
     def __init__(self):
         pass
 
-    def update_flight_cost(self, id):
-        response = requests.post(f"{SHEET_URL}/{id}")
-        return response.json()["Lowest Price"]
+    def update_flight_cost(self, id, lowest_price):
+        flight_json = {
+            "flight": {
+                "id": id,
+                "iataCode": "FRA",
+                "lowestPrice": lowest_price,
+        }}
+        response = requests.put(f"{SHEET_URL}/{id}", json=flight_json )
+        return response.json()
 
     def get_existing_flight_data(self):
         response = requests.get(SHEET_URL)
